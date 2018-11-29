@@ -1,0 +1,17 @@
+{
+  "name": "RadCore",
+  "keywords": "iot communication config",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/randuhmm/rad-core"
+  },
+  "version": "1.0",
+  "authors": {
+    "name": "Jonny Morrill",
+    "url": "http://jonny.morrill.me"
+  },
+  "exclude": [],
+  "frameworks": "arduino",
+  "platforms": "*"
+}
