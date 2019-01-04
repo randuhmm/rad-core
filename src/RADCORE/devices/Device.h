@@ -35,6 +35,8 @@ namespace RAD {
         }
       };
 
+      const char* getName() { return _name; };
+      LinkedSet<Feature* >* getFeatures() { return &_features; };
       Feature* getFeature(const char* id);
       Feature* getAt(uint8_t index) { return _features.get(index); };
 

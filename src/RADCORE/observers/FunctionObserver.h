@@ -27,7 +27,7 @@ namespace RAD {
 
   template <class T>
   void FunctionObserver<T>::update() {
-    return (_fx)(getSubject()->get());
+    return (_fx)(this->getSubject()->get());
   }
 
 }

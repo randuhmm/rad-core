@@ -4,7 +4,7 @@ rad-core
 Documentation
 -------------
 
-The full documentation is at http://rad-ESP8266.rtfd.org.
+The full documentation is at http://rad-core.rtfd.org.
 
 Overview
 --------

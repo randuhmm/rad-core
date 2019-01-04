@@ -30,7 +30,7 @@ namespace RAD {
 
   template <class O, class T>
   void MethodObserver<O, T>::update() {
-    return (_obj->*_fx)(getSubject()->get());
+    return (_obj->*_fx)(this->getSubject()->get());
   }
 
 }

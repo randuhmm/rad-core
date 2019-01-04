@@ -34,7 +34,7 @@ namespace RAD {
 
   template <class O, class K, class T>
   void ObjectMethodObserver<O, K, T>::update() {
-    return (_klass->*_fx)(_obj, getSubject()->get());
+    return (_klass->*_fx)(_obj, this->getSubject()->get());
   }
 
 }

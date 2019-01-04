@@ -19,7 +19,7 @@ namespace RAD {
 
   // Command Types
   enum CommandType {
-    NullCommand  = 0x0,
+    VoidCommand  = 0x0,
     Get          = 0x1,
     Set          = 0x2,
     Trigger      = 0x4
@@ -27,7 +27,7 @@ namespace RAD {
 
   // Event Types
   enum EventType {
-    NullEvent  = 0x0,
+    VoidEvent  = 0x0,
     All        = 0x1,
     Start      = 0x2,
     State      = 0x4
@@ -42,5 +42,16 @@ namespace RAD {
     uint8_t len;
     uint8_t* data;
   };
+
+  PayloadType toPayloadType(const char* s);
+  const char* fromPayloadType(PayloadType ft);
+  CommandType toCommandType(const char* s);
+  const char* fromCommandType(CommandType ct);
+  EventType toEventType(const char* s);
+  const char* fromEventType(EventType et);
+
+  Payload* buildPayload(bool data);
+  Payload* buildPayload(uint8_t data);
+  Payload* buildPayload(uint8_t* data, uint8_t len);
 
 }

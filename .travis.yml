@@ -1,41 +1,68 @@
 
 language: c
 
-before_install:
-  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
-  - sleep 3
-  - export DISPLAY=:1.0
-  - wget http://downloads.arduino.cc/arduino-1.8.3-linux64.tar.xz
-  - tar xf arduino-1.8.3-linux64.tar.xz
-  - sudo mv arduino-1.8.3 /usr/local/share/arduino
-  - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+sudo: required
 
-install:
-  - ln -s $PWD /usr/local/share/arduino/libraries/rad-esp8266
-# boards manager not working on 1.6.7 - 1.6.8
-  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json" --save-prefs
-# install lib arduino json not working in 1.6.5
-#  - arduino --install-library "ArduinoJson"
-  - git clone --branch v5.13.3 https://github.com/bblanchon/ArduinoJson /usr/local/share/arduino/libraries/ArduinoJson
-  - git clone --branch 1.2.3 https://github.com/ivanseidel/LinkedList /usr/local/share/arduino/libraries/LinkedList
-  - git clone --branch 0.14 https://github.com/tzapu/WiFiManager /usr/local/share/arduino/libraries/WiFiManager
-  - arduino --install-boards esp8266:esp8266
-  - arduino --board esp8266:esp8266:generic --save-prefs
-  - arduino --pref "compiler.warning_level=default" --save-prefs
+env:
+  global:
+    # The Arduino IDE will be installed at APPLICATION_FOLDER/arduino
+    - APPLICATION_FOLDER="${HOME}/arduino-ide"
+    - SKETCHBOOK_FOLDER="${HOME}/arduino-sketchbook"
+
+before_install:
+  # Formatting checks:
+  # Check for files starting with a blank line
+  - find . -path ./.git -prune -o -type f -print0 | xargs -0 -L1 bash -c 'head -1 "$0" | grep --binary-files=without-match --regexp="^$"; if [[ "$?" == "0" ]]; then echo "Blank line found at start of $0."; false; fi'
+  # Check for tabs
+  - "if grep --line-number --recursive --binary-files=without-match --exclude-dir=.git --exclude=keywords.txt --regexp=$'\t' .; then echo 'Tab found.'; false; fi"
+  # Check for trailing whitespace
+  - "if grep --line-number --recursive --binary-files=without-match --exclude-dir=.git --regexp='[[:blank:]]$' .; then echo 'Trailing whitespace found.'; false; fi"
+  # Check for non-Unix line endings
+  - "if grep --files-with-matches --recursive --binary-files=without-match --exclude-dir=.git --regexp=$'\r$' .; then echo 'Non-Unix EOL detected.'; false; fi"
+  # Check for blank lines at end of files
+  - find . -path ./.git -prune -o -type f -print0 | xargs -0 -L1 bash -c 'tail -1 "$0" | grep --binary-files=without-match --regexp="^$"; if [[ "$?" == "0" ]]; then echo "Blank line found at end of $0."; false; fi'
+  # Check for files that don't end in a newline (https://stackoverflow.com/a/25686825)
+  - find . -path ./.git -prune -o -type f -print0 | xargs -0 -L1 bash -c 'if test "$(grep --files-with-matches --binary-files=without-match --max-count=1 --regexp='.*' "$0")" && test "$(tail --bytes=1 "$0")"; then echo "No new line at end of $0."; false; fi'
+
+  # Check for typos
+  - git clone https://github.com/ss18/grep-typos.git "${HOME}/scripts/grep-typos"
+  - find "$TRAVIS_BUILD_DIR" -path "${TRAVIS_BUILD_DIR}/.git" -prune -or -type f -print0 | xargs --null --max-args=1 bash "${HOME}/scripts/grep-typos/grep_typos.sh" "$0"
+  - rm "${HOME}/scripts/grep-typos" --recursive --force
+
+  - git clone https://github.com/per1234/arduino-ci-script.git "${HOME}/scripts/arduino-ci-script"
+  - cd "${HOME}/scripts/arduino-ci-script"
+  # Get new tags from the remote
+  - git fetch --tags
+  # Checkout the latest tag
+  - git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
+  - source "${HOME}/scripts/arduino-ci-script/arduino-ci-script.sh"
+
+  # Uncomment the following lines to get verbose output for debugging
+  # 0 (minimum/default) - 2 (maximum) verbosity
+  #- set_script_verbosity 2
+  # Turn on verbose output during compilation
+  #- set_verbose_output_during_compilation "true"
+
+  # Check for library issues that don't affect compilation
+  - set_library_testing "true"
+
+  - set_application_folder "$APPLICATION_FOLDER"
+  - set_sketchbook_folder "$SKETCHBOOK_FOLDER"
+
+  # install ide versions
+  - install_ide '("1.6.5-r5" "1.6.9" "1.6.13" "1.8.5" "newest")'
+
+  # install the esp8266 boards
+  - install_package "esp8266:esp8266" "http://arduino.esp8266.com/stable/package_esp8266com_index.json"
+
+  # Install the library from the repository
+  - install_library
 
 script:
-  - "echo $PWD"
-  - "echo $HOME"
-  - "ls $PWD"
-  - source $TRAVIS_BUILD_DIR/travis/common.sh
-  - build_examples
-#  - "cat $PWD/examples/AutoConnect/AutoConnect.ino"
-#  - arduino -v --verbose-build --verify $PWD/examples/AutoConnect/AutoConnect.ino
-#  - arduino --verify --board arduino:avr:uno $PWD/examples/IncomingCall/IncomingCall.ino
-#  - arduino --verify --board arduino:avr:uno $PWD/examples/AdafruitIO_GPS/AdafruitIO_GPS.ino
-
-after_success:
-  - echo "Done"
+  # Compile all example sketches included with the library
+  # build_sketch arguments: sketch name, fqbn, allow failure, IDE version/list/range
+  - build_sketch "${SKETCHBOOK_FOLDER}/libraries/rad-core/examples" "arduino:avr:uno" "false" "oldest" "newest"
+  - build_sketch "${SKETCHBOOK_FOLDER}/libraries/rad-core/examples" "esp8266:esp8266:generic" "false" "oldest" "newest"
 
 notifications:
   email:
