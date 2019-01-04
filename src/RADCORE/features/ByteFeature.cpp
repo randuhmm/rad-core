@@ -15,7 +15,7 @@ uint8_t ByteFeature::get() {
 }
 
 
-bool ByteFeature::watch(FuncPtr fx) {
+void ByteFeature::watch(FuncPtr fx) {
   new FunctionObserver<uint8_t>(getSubject(), fx);
 }
 

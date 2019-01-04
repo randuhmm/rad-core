@@ -31,7 +31,7 @@ namespace RAD {
 
       void set(bool value);
       bool get();
-      bool watch(FuncPtr fx);
+      void watch(FuncPtr fx);
       Subject<bool>* getSubject() { return &_subject; };
 
       void handlePayload(Payload* payload);

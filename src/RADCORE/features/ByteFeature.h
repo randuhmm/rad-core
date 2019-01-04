@@ -31,7 +31,7 @@ namespace RAD {
 
       void set(uint8_t value);
       uint8_t get();
-      bool watch(FuncPtr fx);
+      void watch(FuncPtr fx);
       Subject<uint8_t>* getSubject() { return &_subject; };
 
       void handlePayload(Payload* payload);

@@ -15,12 +15,12 @@ namespace RAD {
     protected:
     
       typedef void (K::*FuncPtr)(O*, T);
+      
+      O* _obj;
 
       K* _klass;
 
       FuncPtr _fx;
-
-      O* _obj;
     
     public:
       

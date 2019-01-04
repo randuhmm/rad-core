@@ -15,7 +15,7 @@ bool BoolFeature::get() {
 }
 
 
-bool BoolFeature::watch(FuncPtr fx) {
+void BoolFeature::watch(FuncPtr fx) {
   new FunctionObserver<bool>(getSubject(), fx);
 }
 
