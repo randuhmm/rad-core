@@ -37,6 +37,9 @@ before_install:
   - git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
   - source "${HOME}/scripts/arduino-ci-script/arduino-ci-script.sh"
 
+  # source the common utils
+  - source $TRAVIS_BUILD_DIR/travis/common.sh
+
   # Uncomment the following lines to get verbose output for debugging
   # 0 (minimum/default) - 2 (maximum) verbosity
   #- set_script_verbosity 2
@@ -50,10 +53,13 @@ before_install:
   - set_sketchbook_folder "$SKETCHBOOK_FOLDER"
 
   # install ide versions
-  - install_ide '("1.6.5-r5" "1.6.9" "1.6.13" "1.8.5" "newest")'
+  - install_ide '("1.6.9" "1.6.13" "1.8.5" "newest")'
 
   # install the esp8266 boards
   - install_package "esp8266:esp8266" "http://arduino.esp8266.com/stable/package_esp8266com_index.json"
+
+  # fix the boards
+  - fix_esp8266_boards
 
   # Install the library from the repository
   - install_library
