@@ -68,7 +68,7 @@ script:
   # Compile all example sketches included with the library
   # build_sketch arguments: sketch name, fqbn, allow failure, IDE version/list/range
   - build_sketch "${SKETCHBOOK_FOLDER}/libraries/rad-core/examples" "arduino:avr:uno" "false" "oldest" "newest"
-  - build_sketch "${SKETCHBOOK_FOLDER}/libraries/rad-core/examples" "esp8266:esp8266:generic" "false" "oldest" "newest"
+  - build_sketch "${SKETCHBOOK_FOLDER}/libraries/rad-core/examples" "esp8266:esp8266:nodemcu" "false" "oldest" "newest"
 
 notifications:
   email:
