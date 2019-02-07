@@ -18,13 +18,14 @@ namespace RAD {
   template <class T>
   class LinkedSet
   {
-    
+
     private:
       Node<T>* _temp;
       int _size;
 
     public:
       Node<T>* head;
+      const Node<T>* tail = nullptr;
 
       LinkedSet();
       ~LinkedSet();
@@ -33,10 +34,50 @@ namespace RAD {
       bool remove(T data);
       uint8_t find(T data);
       bool contains(T data);
-      
+
       uint8_t size() { return _size; };
 
       T get(uint8_t index);
+
+      class Iterator {
+
+        friend class LinkedSet;
+
+        private:
+
+          Node<T> *nodePtr;
+          // The constructor is private, so only our friends
+          // can create instances of iterators.
+          Iterator(Node<T> *newPtr) : nodePtr(newPtr) {}
+
+        public:
+
+          Iterator() : nodePtr(nullptr) {}
+          // Overload for the comparison operator !=
+          bool operator!=(const Iterator& itr) const {
+            return nodePtr != itr.nodePtr;
+          }
+
+          // Overload for the dereference operator *
+          T& operator*() const {
+            return nodePtr->data;
+          }
+
+          // Overload for the postincrement operator ++
+          Iterator operator++(int) {
+            Iterator temp = *this;
+            nodePtr = nodePtr->next;
+            return temp;
+          }
+      };
+
+      Iterator begin() const {
+        return Iterator(head);
+      }
+
+      Iterator end() const {
+        return Iterator(tail);
+      }
 
   };
 
@@ -44,7 +85,7 @@ namespace RAD {
   template <class T>
   LinkedSet<T>::LinkedSet() {
     _size = 0;
-    head = NULL;
+    head = nullptr;
   }
 
 
@@ -52,8 +93,8 @@ namespace RAD {
   LinkedSet<T>::~LinkedSet() {
     if(_size != 0) {
       _temp = head;
-      Node<T>* prev = NULL;
-      while(_temp != NULL) {
+      Node<T>* prev = nullptr;
+      while(_temp != nullptr) {
         prev = _temp;
         _temp = _temp->next;
         delete prev;
@@ -78,13 +119,13 @@ namespace RAD {
   bool LinkedSet<T>::remove(T data) {
     if(_size == 0) return false;
     _temp = head;
-    Node<T>* prev = NULL;
-    while(_temp->next != NULL && _temp->data != data) {
+    Node<T>* prev = nullptr;
+    while(_temp->next != nullptr && _temp->data != data) {
       prev = _temp;
       _temp = _temp->next;
     }
     if(_temp->data == data) {
-      if(prev == NULL) {
+      if(prev == nullptr) {
         head = _temp->next;
       } else {
         prev->next = _temp->next;
@@ -101,7 +142,7 @@ namespace RAD {
   uint8_t LinkedSet<T>::find(T data) {
     if(_size == 0) return LS_ITEM_NOT_FOUND;
     uint8_t i;
-    for(i = 0, _temp = head; _temp->next != NULL && _temp->data != data; _temp = _temp->next, i++);
+    for(i = 0, _temp = head; _temp->next != nullptr && _temp->data != data; _temp = _temp->next, i++);
     if(_temp->data == data) {
       return i;
     } else {
@@ -114,13 +155,13 @@ namespace RAD {
   bool LinkedSet<T>::contains(T data) {
     return find(data) != LS_ITEM_NOT_FOUND;
   }
-  
+
 
   template <class T>
   T LinkedSet<T>::get(uint8_t index) {
-    if(_size == 0 || index >= _size) return NULL;
+    if(_size == 0 || index >= _size) return nullptr;
     uint8_t i;
-    for(i = 0, _temp = head; _temp->next != NULL && i < index; _temp = _temp->next, i++);
+    for(i = 0, _temp = head; _temp->next != nullptr && i < index; _temp = _temp->next, i++);
     return _temp->data;
   }
 

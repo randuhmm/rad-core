@@ -4,18 +4,21 @@
 
 String inString = "";    // string to hold input
 
-class MyDevice : public RAD::Device {
+class MySerialInterface : public RAD::DeviceInterface {
+
+    const char* _featureId;
 
   public:
 
-    MyDevice(const char* name): Device(name) {};
+    MySerialInterface(RAD::Device* device, const char* featureId):
+      DeviceInterface(device), _featureId(featureId) {};
 
     void onSetup() {
-        Serial.println("MyDevice::onSetup");
+        Serial.println("MySerialInterface::onSetup");
     };
 
     void onUpdate() {
-      Serial.println("MyDevice::onUpdate");
+      Serial.println("MySerialInterface::onUpdate");
 
       while (Serial.available() > 0) {
         int inChar = Serial.read();
@@ -29,13 +32,21 @@ class MyDevice : public RAD::Device {
           Serial.println(inString.toInt());
           Serial.print("String: ");
           Serial.println(inString);
+
           RAD::Payload inputPayload;
           uint8_t inputData[1];
           inputData[0] = (uint8_t)inString.toInt();
           inputPayload.type = RAD::PayloadType::BytePayload;
           inputPayload.len = 1;
           inputPayload.data = inputData;
-          getAt(0)->handlePayload(&inputPayload);
+
+          RAD::Command inputCmd;
+          inputCmd.feature_id = _featureId;
+          inputCmd.payload = &inputPayload;
+          inputCmd.type = RAD::CommandType::Set;
+
+          getDevice()->handleCommand(this, &inputCmd);
+
           // clear the string for new input:
           inString = "";
         }
@@ -43,20 +54,21 @@ class MyDevice : public RAD::Device {
 
     };
 
-    void onPayload(RAD::Feature* feature, RAD::Payload* payload) {
-        Serial.println("MyDevice::onPayload");
+    void handleEvent(RAD::Feature* feature, RAD::Event* event) {
+        Serial.println("MySerialInterface::handleEvent");
         Serial.print("feature = ");
         Serial.println(feature->getId());
         Serial.print("Payload = ");
-        Serial.println(payload->data[0]);
+        Serial.println(event->payload->data[0]);
     };
 
 };
 
-
-const char* name = "MyDevice";
-MyDevice device = MyDevice(name);
-RAD::BoolFeature switch1 = RAD::BoolFeature(&device, "switch1", 0);
+const char* deviceName = "MyDevice";
+const char* featureId = "switch1";
+RAD::Device device = RAD::Device(deviceName);
+MySerialInterface serialInterface = MySerialInterface(&device, featureId);
+RAD::BoolFeature switch1 = RAD::BoolFeature(featureId, &device);
 
 void myCallback(bool value) {
   Serial.print("myCallback: value = ");

@@ -43,6 +43,18 @@ namespace RAD {
     uint8_t* data;
   };
 
+  struct Command {
+    const char* feature_id;
+    CommandType type;
+    Payload* payload;
+  };
+
+  struct Event {
+    const char* feature_id;
+    EventType type;
+    Payload* payload;
+  };
+
   PayloadType toPayloadType(const char* s);
   const char* fromPayloadType(PayloadType ft);
   CommandType toCommandType(const char* s);

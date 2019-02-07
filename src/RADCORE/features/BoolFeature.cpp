@@ -6,7 +6,7 @@ void BoolFeature::set(bool value) {
   _subject.set(value);
   _subject.notify();
   _data[0] = (uint8_t)value;
-  _payloadSubject.notify();
+  _eventSubject.notify();
 }
 
 
@@ -20,9 +20,9 @@ void BoolFeature::watch(FuncPtr fx) {
 }
 
 
-void BoolFeature::handlePayload(Payload* payload) {
+void BoolFeature::handleSet(Payload* payload) {
   uint8_t value = payload->data[0];
-  _payload.data[0] = value;
+  _state.data[0] = value;
   _subject.set(value);
   _subject.notify();
 }

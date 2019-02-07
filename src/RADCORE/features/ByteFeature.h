@@ -12,7 +12,7 @@
 namespace RAD {
 
   class ByteFeature : public Feature {
-    
+
     private:
 
       typedef void (*FuncPtr)(uint8_t);
@@ -21,12 +21,12 @@ namespace RAD {
       uint8_t _data[1];
 
     public:
-      
-      ByteFeature(Device* device, const char* id, uint8_t featureFlags, uint8_t slaveConfig = 0)
-        : Feature(BytePayload, device, id, featureFlags, slaveConfig) {
+
+      ByteFeature(const char* id, Device* device)
+        : Feature(BytePayload, id, device) {
         _data[0] = 0;
-        _payload.len = 1;
-        _payload.data = _data;
+        _state.len = 1;
+        _state.data = _data;
       };
 
       void set(uint8_t value);
@@ -34,7 +34,7 @@ namespace RAD {
       void watch(FuncPtr fx);
       Subject<uint8_t>* getSubject() { return &_subject; };
 
-      void handlePayload(Payload* payload);
+      void handleSet(Payload* payload);
 
   };
 

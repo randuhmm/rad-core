@@ -6,7 +6,7 @@ void ByteFeature::set(uint8_t value) {
   _subject.set(value);
   _subject.notify();
   _data[0] = (uint8_t)value;
-  _payloadSubject.notify();
+  _eventSubject.notify();
 }
 
 
@@ -20,9 +20,9 @@ void ByteFeature::watch(FuncPtr fx) {
 }
 
 
-void ByteFeature::handlePayload(Payload* payload) {
+void ByteFeature::handleSet(Payload* payload) {
   uint8_t value = payload->data[0];
-  _payload.data[0] = value;
+  _state.data[0] = value;
   _subject.set(value);
   _subject.notify();
 }

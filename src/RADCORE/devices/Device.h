@@ -1,49 +1,49 @@
 
 #pragma once
 
+#include "./DeviceInterface.h"
 #include "../util/LinkedSet.h"
 #include "../features/Feature.h"
+#include "../features/FeatureConnector.h"
 #include "../observers/ObjectMethodObserver.h"
 
 namespace RAD {
 
-  class Feature;
+  class DeviceInterface;
+  class FeatureConnector;
 
   class Device {
 
     private:
 
+      LinkedSet<DeviceInterface*> _interfaces;
+      LinkedSet<FeatureConnector*> _connectors;
       LinkedSet<Feature* > _features;
+
       const char* _name;
+
       bool _setup = false;
       bool _running = true;
-  
+
+
     public:
 
       Device(const char* name) : _name(name) {};
 
+      void setup();
+      void update();
+      void add(DeviceInterface* interface);
       void add(Feature* feature);
-
-      void setup() {
-        _setup = true;
-        onSetup();
-      };
-
-      void update() {
-        if(_setup && _running) {
-          onUpdate();
-        }
-      };
+      //void add(FeatureConnector* _connector);
 
       const char* getName() { return _name; };
       LinkedSet<Feature* >* getFeatures() { return &_features; };
       Feature* getFeature(const char* id);
-      Feature* getAt(uint8_t index) { return _features.get(index); };
 
-      virtual void onSetup() = 0;
-      virtual void onUpdate() = 0;
-      virtual void onPayload(Feature* feature, Payload* payload) = 0;
-    
+      void handleEvent(Feature* feature, Event* event);
+      Payload* handleCommand(DeviceInterface* interface, Command* command);
+      Payload* handleCommand(DeviceInterface* interface, Feature* feature, Command* command);
+
   };
 
 }

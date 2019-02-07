@@ -12,7 +12,7 @@
 namespace RAD {
 
   class BoolFeature : public Feature {
-    
+
     private:
 
       typedef void (*FuncPtr)(bool);
@@ -21,12 +21,12 @@ namespace RAD {
       uint8_t _data[1];
 
     public:
-      
-      BoolFeature(Device* device, const char* id, uint8_t featureFlags, uint8_t slaveConfig = 0)
-        : Feature(BoolPayload, device, id, featureFlags, slaveConfig) {
+
+      BoolFeature(const char* id, Device* device)
+        : Feature(BoolPayload, id, device) {
         _data[0] = 0;
-        _payload.len = 1;
-        _payload.data = _data;
+        _state.len = 1;
+        _state.data = _data;
       };
 
       void set(bool value);
@@ -34,7 +34,7 @@ namespace RAD {
       void watch(FuncPtr fx);
       Subject<bool>* getSubject() { return &_subject; };
 
-      void handlePayload(Payload* payload);
+      void handleSet(Payload* payload);
 
   };
 

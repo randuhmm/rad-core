@@ -5,49 +5,42 @@
 #include "../util/Types.h"
 #include "../subjects/Subject.h"
 #include "../observers/Observer.h"
+#include "./FeatureConnector.h"
 #include "../devices/Device.h"
 
 namespace RAD {
 
-  // Forward declaration
   class Device;
+  class FeatureConnector;
 
   class Feature {
 
-    
     private:
 
-      Device* _device;
       const char* _id;
-      uint8_t _featureFlags;
 
-      bool _isSlave;
-      uint8_t _slaveAddress;
-      uint8_t _slaveId;
-    
     protected:
 
-      Payload _payload;
-      Subject<Payload*> _payloadSubject;
+      Payload _state;
+      Event _event;
+      Subject<Event*> _eventSubject;
+      FeatureConnector* _connector;
+
+      virtual void handleSet(Payload* payload) = 0;
 
     public:
-      
-      Feature(PayloadType payloadType, Device* device, const char* id, uint8_t featureFlags, uint8_t slaveConfig = 0);
 
-      Device* getDevice() { return _device; };
-      PayloadType getPayloadType() { return _payload.type; };
+      Feature(PayloadType payloadType, const char* id, Device* device,
+              FeatureConnector* featureconnector = NULL);
+
+      PayloadType getPayloadType() { return _state.type; };
       const char* getId() { return _id; };
 
-      bool checkFlag(uint8_t flag) { return _featureFlags & flag; };
+      Payload* getState() { return &_state; };
+      Event* getEvent() { return &_event; };
+      Subject<Event*>* getEventSubject() { return &_eventSubject; };
 
-      bool isSlave() { return _isSlave; };
-      uint8_t getSlaveAddress() { return _slaveAddress; };
-      uint8_t getSlaveId() { return _slaveId; };
-      
-      Payload* getPayload() { return &_payload; };
-      Subject<Payload*>* getPayloadSubject() { return &_payloadSubject; };
-      
-      virtual void handlePayload(Payload* payload) = 0;
+      Payload* handleCommand(Command* command);
 
   };
 

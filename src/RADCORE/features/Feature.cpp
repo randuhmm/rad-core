@@ -2,17 +2,26 @@
 
 using namespace RAD;
 
-Feature::Feature(PayloadType payloadType, Device* device, const char* id, uint8_t featureFlags, uint8_t slaveConfig)
-  : _device(device), _id(id), _featureFlags(featureFlags) {
+Feature::Feature(PayloadType payloadType, const char* id, Device* device,
+                 FeatureConnector* connector)
+  : _id(id), _connector(connector) {
+  _state.type = payloadType;
+  _event.payload = &_state;
+  _eventSubject.set(&_event);
+  device->add(this);
+}
 
-  if(slaveConfig != 0) {
-    _isSlave = true;
-    _slaveAddress = (slaveConfig >> 4);
-    _slaveId = (slaveConfig & 0xF);
+Payload* Feature::handleCommand(Command* command) {
+  if(_connector != nullptr) {
+    _connector->handleCommand(this, command);
   }
-
-  _payload.type = payloadType;
-  _payloadSubject.set(&_payload);
-
-  _device->add(this);
+  switch(command->type) {
+    case CommandType::Set :
+      handleSet(command->payload);
+      break;
+    case CommandType::Get :
+      return &_state;
+      break;
+  }
+  return nullptr;
 }
