@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# set variables
+docker_arduino_tag="1.8.5"
+
+# build the docker-arduino image if not present
+if [ $(docker image list docker-arduino:${version} -q | wc -l) != 1 ]; then
+    echo downloading docker image;
+    git clone "https://github.com/SloCompTech/docker-arduino.git"
+    cd docker-arduino
+    git checkout "${docker_arduino_tag}"
+    docker build -t docker-arduino:1.8.5 .
+    cd ../
+fi
+
+

@@ -1,0 +1,67 @@
+
+
+
+arduino-builder \
+  -hardware ${ARDUINO_HARDWARE} \
+  -tools ${ARDUINO_TOOLS}/avr \
+  -tools ${ARDUINO_TOOLS_BUILDER} \
+  -libraries ${ARDUINO_LIBS} \
+  -fqbn 'esp8266:esp8266:generic' \
+  /opt/arduino/examples/01.Basics/Blink/Blink.ino
+
+echo "
+ARDUINO_HARDWARE
+ARDUINO_TOOLS
+ARDUINO_TOOLS_BUILDER
+ARDUINO_LIBS
+"
+
+ARDUINO_HARDWARE=/opt/arduino/hardware
+ARDUINO_TOOLS=/opt/arduino/hardware/tools
+ARDUINO_TOOLS_BUILDER=/opt/arduino/tools-builder
+ARDUINO_LIBS=/opt/arduino/libraries
+
+
+arduino-builder \
+  -hardware ${ARDUINO_HARDWARE} \
+  -hardware ~/.arduino15/packages/esp8266/hardware/ \
+  -tools ${ARDUINO_TOOLS}/avr \
+  -tools ${ARDUINO_TOOLS_BUILDER} \
+  -libraries ${ARDUINO_LIBS} \
+  -fqbn 'esp8266:esp8266:nodemcu' \
+  /opt/arduino/examples/01.Basics/Blink/Blink.ino
+
+
+
+arduino \
+  --verify \
+  --board esp8266:esp8266:nodemcu \
+  /opt/arduino/examples/01.Basics/Blink/Blink.ino
+
+
+
+arduino-builder \
+  -dump-prefs \
+  -logger=machine \
+  -hardware /opt/arduino/hardware \
+  -hardware /root/.arduino15/packages \
+  -hardware /root/Arduino/hardware \
+  -tools /opt/arduino/tools-builder \
+  -tools /opt/arduino/hardware/tools/avr \
+  -tools /root/.arduino15/packages \
+  -built-in-libraries /opt/arduino/libraries \
+  -libraries /root/Arduino/libraries \
+  -fqbn=esp8266:esp8266:generic \
+  -ide-version=10805 \
+  -build-path ./ \
+  -warnings=default \
+  -prefs=build.warn_data_percentage=75 \
+  -verbose /opt/arduino/examples/01.Basics/Blink/Blink.ino
+
+
+
+
+
+/opt/arduino/arduino-builder -dump-prefs -logger=machine -hardware /opt/arduino/hardware -hardware /root/.arduino15/packages -hardware /root/Arduino/hardware -tools /opt/arduino/tools-builder -tools /opt/arduino/hardware/tools/avr -tools /root/.arduino15/packages -built-in-libraries /opt/arduino/libraries -libraries /root/Arduino/libraries -fqbn=esp8266:esp8266:nodemcu -ide-version=10805 -build-path "$(pwd)" -warnings=default -prefs=build.warn_data_percentage=75 -prefs=runtime.tools.esptool.path=/root/.arduino15/packages/esp8266/tools/esptool/2.5.0-3-20ed2b9 -prefs=runtime.tools.xtensa-lx106-elf-gcc.path=/root/.arduino15/packages/esp8266/tools/xtensa-lx106-elf-gcc/2.5.0-3-20ed2b9 -prefs=runtime.tools.mkspiffs.path=/root/.arduino15/packages/esp8266/tools/mkspiffs/2.5.0-3-20ed2b9 -verbose /opt/arduino/examples/01.Basics/Blink/Blink.ino
+
+/opt/arduino/arduino-builder -compile -logger=machine -hardware /opt/arduino/hardware -hardware /root/.arduino15/packages -hardware /root/Arduino/hardware -tools /opt/arduino/tools-builder -tools /opt/arduino/hardware/tools/avr -tools /root/.arduino15/packages -built-in-libraries /opt/arduino/libraries -libraries /root/Arduino/libraries -fqbn=esp8266:esp8266:nodemcu -ide-version=10805 -build-path "$(pwd)" -warnings=default -prefs=build.warn_data_percentage=75 -prefs=runtime.tools.esptool.path=/root/.arduino15/packages/esp8266/tools/esptool/2.5.0-3-20ed2b9 -prefs=runtime.tools.xtensa-lx106-elf-gcc.path=/root/.arduino15/packages/esp8266/tools/xtensa-lx106-elf-gcc/2.5.0-3-20ed2b9 -prefs=runtime.tools.mkspiffs.path=/root/.arduino15/packages/esp8266/tools/mkspiffs/2.5.0-3-20ed2b9 -verbose /opt/arduino/examples/01.Basics/Blink/Blink.ino
