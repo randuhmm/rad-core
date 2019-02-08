@@ -61,7 +61,7 @@ void Device::handleEvent(Feature* feature, Event* event) {
 
 Payload* Device::handleCommand(DeviceInterface* interface, Command* command) {
   Feature* feature = getFeature(command->feature_id);
-  if(feature == nullptr) return;
+  if(feature == nullptr) return nullptr;
   return feature->handleCommand(command);
 }
 
