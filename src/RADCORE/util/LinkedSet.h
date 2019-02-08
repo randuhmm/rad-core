@@ -25,7 +25,7 @@ namespace RAD {
 
     public:
       Node<T>* head;
-      const Node<T>* tail = nullptr;
+      Node<T>* tail = nullptr;
 
       LinkedSet();
       ~LinkedSet();
