@@ -1,16 +1,30 @@
 #!/usr/bin/env bash
+# set -x
 
 # set variables
 docker_arduino_tag="1.8.5"
+image_name="docker-arduino:${docker_arduino_tag}"
+container_name="rad-core"
+project_dir="$(pwd -W | tr '\\' '/')"
+project_volume="${project_dir};/mnt/${container_name}/"
 
 # build the docker-arduino image if not present
-if [ $(docker image list docker-arduino:${version} -q | wc -l) != 1 ]; then
-    echo downloading docker image;
+if [ $(docker image list ${image_name} --quiet | wc -l) != 1 ]; then
+    echo downloading docker image...
     git clone "https://github.com/SloCompTech/docker-arduino.git"
     cd docker-arduino
     git checkout "${docker_arduino_tag}"
-    docker build -t docker-arduino:1.8.5 .
+    echo building docker image...
+    docker build -t ${image_name} .
+    rm -Rf "$(pwd)"
     cd ../
 fi
 
-
+# build the container if not present
+if [ $(docker container list --filter "name=${container_name}" \
+       --quiet --latest | wc -l) != 1 ]; then
+    image_id="$(docker image list ${image_name} --quiet)"
+    echo creating new container from image ${image_id}...
+    docker container create --name "${container_name}" \
+        --volume "${project_volume}" ${image_id}
+fi

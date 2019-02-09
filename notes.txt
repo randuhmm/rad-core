@@ -65,3 +65,38 @@ arduino-builder \
 /opt/arduino/arduino-builder -dump-prefs -logger=machine -hardware /opt/arduino/hardware -hardware /root/.arduino15/packages -hardware /root/Arduino/hardware -tools /opt/arduino/tools-builder -tools /opt/arduino/hardware/tools/avr -tools /root/.arduino15/packages -built-in-libraries /opt/arduino/libraries -libraries /root/Arduino/libraries -fqbn=esp8266:esp8266:nodemcu -ide-version=10805 -build-path "$(pwd)" -warnings=default -prefs=build.warn_data_percentage=75 -prefs=runtime.tools.esptool.path=/root/.arduino15/packages/esp8266/tools/esptool/2.5.0-3-20ed2b9 -prefs=runtime.tools.xtensa-lx106-elf-gcc.path=/root/.arduino15/packages/esp8266/tools/xtensa-lx106-elf-gcc/2.5.0-3-20ed2b9 -prefs=runtime.tools.mkspiffs.path=/root/.arduino15/packages/esp8266/tools/mkspiffs/2.5.0-3-20ed2b9 -verbose /opt/arduino/examples/01.Basics/Blink/Blink.ino
 
 /opt/arduino/arduino-builder -compile -logger=machine -hardware /opt/arduino/hardware -hardware /root/.arduino15/packages -hardware /root/Arduino/hardware -tools /opt/arduino/tools-builder -tools /opt/arduino/hardware/tools/avr -tools /root/.arduino15/packages -built-in-libraries /opt/arduino/libraries -libraries /root/Arduino/libraries -fqbn=esp8266:esp8266:nodemcu -ide-version=10805 -build-path "$(pwd)" -warnings=default -prefs=build.warn_data_percentage=75 -prefs=runtime.tools.esptool.path=/root/.arduino15/packages/esp8266/tools/esptool/2.5.0-3-20ed2b9 -prefs=runtime.tools.xtensa-lx106-elf-gcc.path=/root/.arduino15/packages/esp8266/tools/xtensa-lx106-elf-gcc/2.5.0-3-20ed2b9 -prefs=runtime.tools.mkspiffs.path=/root/.arduino15/packages/esp8266/tools/mkspiffs/2.5.0-3-20ed2b9 -verbose /opt/arduino/examples/01.Basics/Blink/Blink.ino
+
+
+docker container create --label "name=rad-core" --volume "C:\Users\j.morrill\Projects\me\rad-core;/root/rad-core/" 3803f9c19399
+
+docker container create --label "name=rad-core" --volume "C:/Users/j.morrill/Projects/me/rad-core;/root/rad-core/" 3803f9c19399
+
+docker container create --label "name=rad-core" 3803f9c19399
+
+
+
+docker container run -i -t --name "rad-core" --volume "//c/Users/j.morrill/Projects/me/rad-core:/root/rad-core/" 3803f9c19399
+
+
+
+/opt/arduino/arduino-builder -compile \
+  -logger=machine \
+  -hardware /opt/arduino/hardware \
+  -hardware /root/.arduino15/packages \
+  -hardware /root/Arduino/hardware \
+  -tools /opt/arduino/tools-builder \
+  -tools /opt/arduino/hardware/tools/avr \
+  -tools /root/.arduino15/packages \
+  -built-in-libraries /opt/arduino/libraries \
+  -libraries /root/Arduino/libraries \
+  -libraries /mnt/rad-core \
+  -fqbn=esp8266:esp8266:nodemcu \
+  -ide-version=10805 \
+  -build-path "$(pwd)" \
+  -warnings=default \
+  -prefs=build.warn_data_percentage=75 \
+  -prefs=runtime.tools.esptool.path=/root/.arduino15/packages/esp8266/tools/esptool/2.5.0-3-20ed2b9 \
+  -prefs=runtime.tools.xtensa-lx106-elf-gcc.path=/root/.arduino15/packages/esp8266/tools/xtensa-lx106-elf-gcc/2.5.0-3-20ed2b9 \
+  -prefs=runtime.tools.mkspiffs.path=/root/.arduino15/packages/esp8266/tools/mkspiffs/2.5.0-3-20ed2b9 \
+  -verbose \
+  /mnt/rad-core/examples/LinkedSet/LinkedSet.ino
