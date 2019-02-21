@@ -15,6 +15,12 @@ void Device::add(DeviceInterface* interface) {
   }
 }
 
+void Device::add(FeatureConnector* connector) {
+  if(!_setup) {
+    _connectors.add(connector);
+  }
+}
+
 Feature* Device::getFeature(const char* id) {
   auto it = _features.begin();
   for(; it != _features.end(); it++) {
@@ -57,6 +63,11 @@ void Device::handleEvent(Feature* feature, Event* event) {
   for(;it != _interfaces.end(); it++) {
     (*it)->handleEvent(feature, event);
   }
+}
+
+void Device::handleEvent(Event* event) {
+  Feature* feature = getFeature(event->feature_id);
+  if(feature != nullptr) handleEvent(feature, event);
 }
 
 Payload* Device::handleCommand(DeviceInterface* interface, Command* command) {

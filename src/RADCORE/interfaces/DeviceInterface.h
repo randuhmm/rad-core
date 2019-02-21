@@ -22,7 +22,7 @@ namespace RAD {
 
       DeviceInterface(Device* device);
       Device* getDevice();
-      Feature* getFeature(const char* name);
+      Feature* getFeature(const char* id);
       LinkedSet<Feature*>* getFeatures();
       Payload* sendCommand(Feature* feature, Command* command);
       Payload* sendCommand(Command* command);

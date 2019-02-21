@@ -20,7 +20,10 @@ namespace RAD {
 
       FeatureConnector(Device* device);
       Device* getDevice();
-      Feature* getFeature(const char* name);
+      Feature* getFeature(const char* id);
+      LinkedSet<Feature* >* getFeatures() { return &_features; };
+      void sendEvent(Feature* feature, Event* event);
+      void sendEvent(Event* event);
 
       virtual void onSetup() = 0;
       virtual void onUpdate() = 0;

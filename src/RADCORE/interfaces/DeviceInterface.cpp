@@ -10,8 +10,8 @@ Device* DeviceInterface::getDevice() {
   return _device;
 }
 
-Feature* DeviceInterface::getFeature(const char* name) {
-  return _device->getFeature(name);
+Feature* DeviceInterface::getFeature(const char* id) {
+  return _device->getFeature(id);
 }
 
 LinkedSet<Feature*>* DeviceInterface::getFeatures() {

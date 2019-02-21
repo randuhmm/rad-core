@@ -34,12 +34,13 @@ namespace RAD {
       void update();
       void add(DeviceInterface* interface);
       void add(Feature* feature);
-      //void add(FeatureConnector* _connector);
+      void add(FeatureConnector* _connector);
 
       const char* getName() { return _name; };
       LinkedSet<Feature* >* getFeatures() { return &_features; };
       Feature* getFeature(const char* id);
 
+      void handleEvent(Event* event);
       void handleEvent(Feature* feature, Event* event);
       Payload* handleCommand(DeviceInterface* interface, Command* command);
       Payload* handleCommand(DeviceInterface* interface, Feature* feature, Command* command);
