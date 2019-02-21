@@ -17,6 +17,7 @@
 
 #include "RADCORE/util/Defines.h"
 #include "RADCORE/util/Types.h"
+#include "RADCORE/util/LinkedMap.h"
 #include "RADCORE/util/LinkedSet.h"
 #include "RADCORE/observers/Observer.h"
 #include "RADCORE/subjects/Subject.h"

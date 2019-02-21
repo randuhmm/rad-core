@@ -116,7 +116,7 @@ uint8_t RAD::packBinaryCommand(Command* command, uint8_t* data) {
   // id length
   data[1] = id_len;
   // id
-  memcpy(data[2], command->feature_id, id_len);
+  memcpy(&data[2], command->feature_id, id_len);
   // command->type
   data[2 + id_len] = command->type;
   // payload->type
@@ -125,22 +125,19 @@ uint8_t RAD::packBinaryCommand(Command* command, uint8_t* data) {
   data[4 + id_len] = payload_len;
   if(payload_len != 0) {
     // payload->data
-    memcpy(data[5 + id_len], command->payload->data, payload_len);
+    memcpy(&data[5 + id_len], command->payload->data, payload_len);
   }
   return len;
 }
 
 
 uint8_t RAD::packBinaryEvent(Event* event, uint8_t* data) {
-  Serial.println(event->feature_id);
   uint8_t id_len = strlen(event->feature_id);
   uint8_t payload_len = event->payload->len;
   uint8_t len = payload_len + id_len + 5;
   // version = 1
   data[0] = 1;
   // id length
-  Serial.print("id len = ");
-  Serial.println(id_len, DEC);
   data[1] = id_len;
   // id
   memcpy(&data[2], event->feature_id, id_len);
