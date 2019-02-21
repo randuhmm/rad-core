@@ -3,7 +3,6 @@
 
 #include "./Types.h"
 
-class Feature;
 
 struct I2CConfig {
   uint8_t slaveAddr;

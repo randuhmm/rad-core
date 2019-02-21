@@ -22,11 +22,12 @@
 #include "RADCORE/subjects/Subject.h"
 #include "RADCORE/observers/FunctionObserver.h"
 #include "RADCORE/observers/MethodObserver.h"
-#include "RADCORE/devices/DeviceInterface.h"
-#include "RADCORE/devices/Device.h"
+#include "RADCORE/interfaces/DeviceInterface.h"
+#include "RADCORE/interfaces/BinaryInterface.h"
+#include "RADCORE/Device.h"
 #include "RADCORE/features/Feature.h"
 #include "RADCORE/features/BoolFeature.h"
 #include "RADCORE/features/ByteFeature.h"
-#include "RADCORE/features/FeatureConnector.h"
+#include "RADCORE/connectors/FeatureConnector.h"
 
 #endif // __RADCORE_H__

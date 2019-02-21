@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "./Device.h"
+#include "../Device.h"
 #include "../util/Types.h"
 #include "../util/LinkedSet.h"
 #include "../subjects/Subject.h"
@@ -10,6 +10,7 @@
 namespace RAD {
 
   class Device;
+  class Feature;
 
   class DeviceInterface {
 

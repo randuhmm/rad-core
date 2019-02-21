@@ -5,8 +5,8 @@
 #include "../util/Types.h"
 #include "../subjects/Subject.h"
 #include "../observers/Observer.h"
-#include "./FeatureConnector.h"
-#include "../devices/Device.h"
+#include "../connectors/FeatureConnector.h"
+#include "../Device.h"
 
 namespace RAD {
 

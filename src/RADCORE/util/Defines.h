@@ -7,6 +7,8 @@
 #define RAD_MIN_WRITE_INTERVAL 60
 
 #define RAD_MAX_SUBSCRIPTIONS 8
+#define RAD_MAX_FEATURE_ID_LEN 15
+#define RAD_MAX_BINARY_DATA_SIZE 255
 
 #define RAD_HTTP_PORT 80
 #define RAD_DEVICE_TYPE "urn:rad:device:esp8266:1"

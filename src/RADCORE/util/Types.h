@@ -1,7 +1,14 @@
 
 #pragma once
 
-#include <Arduino.h>
+
+#if defined(ARDUINO)
+  #include <Arduino.h>
+#else
+  #include <cstdlib>
+  #include <cstring>
+#endif
+
 
 namespace RAD {
 
@@ -65,5 +72,11 @@ namespace RAD {
   Payload* buildPayload(bool data);
   Payload* buildPayload(uint8_t data);
   Payload* buildPayload(uint8_t* data, uint8_t len);
+
+  uint8_t packBinaryCommand(Command* command, uint8_t* data);
+  uint8_t packBinaryEvent(Event* event, uint8_t* data);
+
+  // Command* unpackBinaryCommand(uint8_t* data);
+  // Event* unpackBinaryEvent(uint8_t* data);
 
 }

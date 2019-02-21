@@ -1,11 +1,11 @@
 
 #pragma once
 
-#include "./DeviceInterface.h"
-#include "../util/LinkedSet.h"
-#include "../features/Feature.h"
-#include "../features/FeatureConnector.h"
-#include "../observers/ObjectMethodObserver.h"
+#include "./interfaces/DeviceInterface.h"
+#include "./util/LinkedSet.h"
+#include "./features/Feature.h"
+#include "./connectors/FeatureConnector.h"
+#include "./observers/ObjectMethodObserver.h"
 
 namespace RAD {
 

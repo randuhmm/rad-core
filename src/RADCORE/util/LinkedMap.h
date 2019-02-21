@@ -30,7 +30,7 @@ namespace RAD {
 
     public:
       MapNode<K, V>* head;
-      const MapNode<K, V>* tail = nullptr;
+      MapNode<K, V>* tail = nullptr;
 
       LinkedMap();
       ~LinkedMap();
@@ -38,7 +38,7 @@ namespace RAD {
       bool set(K key, V value);
       bool remove(K key);
       bool contains(K key);
-      V value(K key);
+      V* value(K key);
 
       uint8_t size() { return _size; };
 
@@ -62,7 +62,7 @@ namespace RAD {
           }
 
           // Overload for the dereference operator *
-          MapNode<K, V>& operator*() const {
+          MapNode<K, V>* operator*() const {
             return nodePtr;
           }
 
@@ -168,10 +168,10 @@ namespace RAD {
 
 
   template <class K, class V>
-  V LinkedMap<K, V>::value(K key) {
+  V* LinkedMap<K, V>::value(K key) {
     if(_size == 0) return nullptr;
     for(_temp = head; _temp->next != nullptr && _temp->key != key; _temp = _temp->next);
-    return _temp->value;
+    return &_temp->value;
   }
 
 }
